@@ -1,0 +1,104 @@
+# Collatz Conjecture
+# Vincent Vanmarsenille
+
+import matplotlib as plt
+import multiprocessing as mp
+from numba import njit, jit
+from time import perf_counter
+from functools import lru_cache
+
+start = perf_counter()
+# Reflected lists may give an error in the future since they will not be supported anymore by Numba
+# Program works slower than without @njit
+# MaxNumber=int(input("Up to which number do you want to generate the Collatz Conjecture?:"))
+MaxNumber = 5000000
+
+@njit()
+def generate_numbers():
+    AllNumbers = list()
+    for i in range(1, MaxNumber + 1):
+        AllNumbers.append(i)
+    return AllNumbers
+
+#@lru_cache
+@njit()  # met jit(parallel=true) duurt het 21s voor 10000 iteraties zonder jit slechts 16!
+def algorithm_even_numbers(YourNumber):
+    YourNumber = YourNumber // 2
+    return YourNumber
+
+#@lru_cache
+@njit()
+def algorithm_uneven_numbers(YourNumber):
+    YourNumber = YourNumber * 3 + 1
+    return YourNumber
+#@njit()
+def Check(CollatzConjecture):
+    if (len(CollatzConjecture)>=4):
+        if (CollatzConjecture[-3:]==[4,2,1]):
+            return True
+        else:
+            return False
+    else:                     # Also returns True when CollatzConjecture has a length smaller than 3
+        return True
+
+
+
+def Main():
+    AllNumbers = generate_numbers()
+    for i in range(len(AllNumbers)):
+        YourNumber = AllNumbers[i]
+        #print(YourNumber,":",YourNumber,end=" ")
+        CollatzConjecture = [-1]  # -1 because otherwise numba does not know that it a list of integers
+        while (YourNumber > 1):
+            if (YourNumber % 2 == 0):
+                YourNumber = algorithm_even_numbers(YourNumber)
+                CollatzConjecture.append(YourNumber)
+            if (YourNumber == 1):
+                break
+            if (YourNumber % 2 != 0):
+                YourNumber = algorithm_uneven_numbers(YourNumber)
+                CollatzConjecture.append(YourNumber)
+
+        if (Check(CollatzConjecture)==False):
+            print('\n', AllNumbers[i],' did not have a Collatz Conjecture series ending in 4,2,1. Program will be aborted.')
+            exit()
+
+        #for i in CollatzConjecture[1:]:
+          #  print(i, end=" ")
+        #print('\n')
+
+    stop = perf_counter()
+    print("Program runned for ", stop - start, "seconds including compilation and execution.", ' Program checked up to ',MaxNumber,' succesfully.')
+
+
+
+def Main2():
+    start2 = perf_counter()
+    AllNumbers = generate_numbers()
+    for i in range(len(AllNumbers)):
+        YourNumber = AllNumbers[i]
+        #print(YourNumber,":",YourNumber, end=" ")
+        CollatzConjecture = [-1]  # -1 because otherwise numba does not know that it a list of integers
+        while (YourNumber > 1):
+            if (YourNumber % 2 == 0):
+                YourNumber = algorithm_even_numbers(YourNumber)
+                CollatzConjecture.append(YourNumber)
+            if (YourNumber == 1):
+                break
+            if (YourNumber % 2 != 0):
+                YourNumber = algorithm_uneven_numbers(YourNumber)
+                CollatzConjecture.append(YourNumber)
+
+        if (Check(CollatzConjecture)==False):
+           print('\n', f'{AllNumbers[i]} did not have a Collatz Conjecture series ending in 4,2,1. Program will be aborted.')
+           exit()
+
+        #for i in CollatzConjecture[1:]:
+            #print(i, end=" ")
+        #print('\n')
+
+    stop2 = perf_counter()
+    print("Program runned ", stop2 - start2, "seconds without compiling. Program checked up to ",MaxNumber," succesfully.")
+
+Main()
+Main2()
