@@ -1,0 +1,40 @@
+from mpi4py import MPI
+from time import perf_counter
+ 
+def collatz(num):
+    if (num == 1):
+        return 0
+ 
+    if (num % 2 == 0):
+        count = collatz(num // 2)
+    else:
+        count = collatz(num * 3 + 1)
+    return 1 + count
+ 
+ 
+def main():
+    data = {}
+    LowerBound = (comm.rank) * 714286 + 1
+    for n in range(LowerBound, (comm.rank + 1) * 714286 + 1):
+        data[n] = collatz(n)
+ 
+    if (comm.rank==0):
+       assert data[1] == 0           # Assert throws error if following statement is not true
+       assert data[4] == 2
+       assert data[27] == 111
+ 
+ 
+if __name__ == '__main__':
+ 
+    comm = MPI.COMM_WORLD
+    myrank = comm.Get_rank()
+    nproc = comm.Get_size()
+ 
+    start = perf_counter()
+    main()
+    stop = perf_counter()
+ 
+    if(comm.rank<13):
+       print("Node", myrank,"executed calculations after",stop-start, 'seconds.')
+    else:
+        print("Total function executed in", stop-start,"seconds.")
