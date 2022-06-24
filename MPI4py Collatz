@@ -1,6 +1,8 @@
+from functools import lru_cache
 from mpi4py import MPI
 from time import perf_counter
  
+@lru_cache
 def collatz(num):
     if (num == 1):
         return 0
