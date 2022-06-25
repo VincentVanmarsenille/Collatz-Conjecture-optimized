@@ -13,7 +13,7 @@ def collatz(num):
         count = collatz(num // 2)
     else:
         count = collatz(num * 3 + 1)
-    return 1 + count                   # Function had to be rewritten to make it recursive
+    return 1 + count                   
 
 
 def main():
