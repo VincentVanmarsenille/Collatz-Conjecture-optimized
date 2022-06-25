@@ -52,7 +52,7 @@ void ExeCollatz()
 }
 int main() 
 {
-    size = 10000000;
+    size = 1000000;
     mem = new int [size] {0};
     ExeCollatz();
     delete[] mem;
