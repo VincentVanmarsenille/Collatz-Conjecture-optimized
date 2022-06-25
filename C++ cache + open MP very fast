@@ -6,7 +6,7 @@
 
 int* mem;
 long long int size = 0;
-// returns steps to reach 1
+// returns amount of steps to reach 1
 int Collatz(long long int n) {
     if (n < size && mem[n] != 0)
     {
