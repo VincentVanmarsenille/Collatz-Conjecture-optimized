@@ -6,7 +6,7 @@
 #include <omp.h>
 #include <vector>
 #include <thread>
-#define NUM_THREADS 4
+#define NUM_THREADS 14
 
 
 using namespace std::chrono;
@@ -77,7 +77,7 @@ void mp_info()
 int main()
 {
     omp_set_dynamic(0);
-    omp_set_num_threads(NUM_THREADS);
+    omp_set_num_threads(14);
 
     std::cout << "Up to which number do you want to calculate the Collatz Conjecture?" << std::endl;
     long long int maxnumber;
