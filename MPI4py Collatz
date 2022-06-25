@@ -16,7 +16,7 @@ def collatz(num):
  
 def main():
     data = {}
-    LowerBound = (comm.rank) * 714286 + 1
+    LowerBound = (comm.rank) * 71429 + 1
     for n in range(LowerBound, (comm.rank + 1) * 71429 + 1):
         data[n] = collatz(n)
  
