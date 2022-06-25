@@ -55,7 +55,7 @@ void Execute_Collatz(const long long int maxnumber, std::vector<int>& data)
 {
 
 
-#pragma omp parallel for
+#pragma omp parallel for num_threads(14)
     for (long long int num = 1; num < maxnumber + 1; num++)
     {
         data[num] = Collatz(num);
