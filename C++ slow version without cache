@@ -11,8 +11,7 @@
 
 using namespace std::chrono;
 
-// For memoization, every thread needs it's own chache or synchronization for the cache is needed
-// Parallelization probably won't do a lot but we can try to assign multiple threads to call the Collatz() function 
+
 // Open MP is used for parallelism within a multicore node for shared memory between the threads
 
 
