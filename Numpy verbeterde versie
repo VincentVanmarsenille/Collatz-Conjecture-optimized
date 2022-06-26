@@ -1,0 +1,47 @@
+import numpy as np
+from time import perf_counter
+from numba import njit
+
+
+
+
+@njit
+def Collatz_algorithm(arr, index):
+
+    if (arr[index]==1):
+        return arr
+
+    elif (arr[index] % 2 == 0):
+
+        arr[index]=arr[index] // 2
+        arr=Collatz_algorithm(arr, index)
+
+    else:
+        arr[index]=arr[index] * 3 + 1
+        arr=Collatz_algorithm(arr, index)
+
+    return arr
+
+
+
+if __name__== '__main__':
+
+    max = 1000000
+    arr = np.arange(1, max + 1)
+    arr = arr.astype(np.int64)
+    index = 0
+
+
+    start = perf_counter()
+    for index in range(len(arr)):
+        Collatz_algorithm(arr, index)  #Should return an array filled entirely with 1's.
+    stop = perf_counter()
+    print("Collatz conjecture executed in ", stop - start, " seconds for ", max, ' iterations.')
+    start2 = perf_counter()
+    for index in range(len(arr)):
+        Collatz_algorithm(arr, index)
+    stop2 = perf_counter()
+    assert arr[1] == 1
+    assert arr[250] == 1
+    assert arr[469574] == 1
+    print("Collatz conjecture executed in ",stop2 - start2," seconds for ",max,' iterations.')
